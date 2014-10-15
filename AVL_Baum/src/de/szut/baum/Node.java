@@ -3,11 +3,13 @@ package de.szut.baum;
 public class Node {
 	
 	private ComparableObject<?> value;
+	private Node parent;
 	private Node leftNode;
 	private Node rightNode;
 	
-	public Node(ComparableObject<?> value) {
+	public Node(ComparableObject<?> value, Node parent) {
 		this.value = value;
+		this.parent = parent;
 		leftNode = null;
 		rightNode = null;
 	}
@@ -30,6 +32,14 @@ public class Node {
 	
 	public ComparableObject<?> getValue() {
 		return value;
+	}
+
+	public Node getParent() {
+		return parent;
+	}
+
+	public void setParent(Node parent) {
+		this.parent = parent;
 	}
 
 }
