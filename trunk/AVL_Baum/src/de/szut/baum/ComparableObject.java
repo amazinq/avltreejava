@@ -1,8 +1,7 @@
 package de.szut.baum;
 
 
-@SuppressWarnings("rawtypes")
-public class ComparableObject<T extends Comparable> {
+public class ComparableObject<T extends Comparable<T>> {
 	
 	private T object;
 	
