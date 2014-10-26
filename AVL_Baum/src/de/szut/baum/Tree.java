@@ -49,14 +49,15 @@ public class Tree {
 			if (currentNode.getValue().getObject().compareTo(value) == 0) {
 				return true;
 			} else {
-				if (value.getObject().compareTo((currentNode.getValue().getObject())) == -1) {
-					if(currentNode.getLeftNode() != null) {
+				if (value.getObject().compareTo(
+						(currentNode.getValue().getObject())) == -1) {
+					if (currentNode.getLeftNode() != null) {
 						currentNode = currentNode.getLeftNode();
 					} else {
 						return false;
 					}
 				} else {
-					if(currentNode.getRightNode() != null) {
+					if (currentNode.getRightNode() != null) {
 						currentNode = currentNode.getRightNode();
 					} else {
 						return false;
@@ -75,12 +76,20 @@ public class Tree {
 		return 0;
 	}
 
-	public ComparableObject<?> getBiggest() {
-		return null;
+	public ComparableObject getBiggest() {
+		Node currentNode = root;
+		while (currentNode.getRightNode() != null) {
+			currentNode = currentNode.getRightNode();
+		}
+		return currentNode.getValue();
 	}
 
-	public ComparableObject<?> getSmallest() {
-		return null;
+	public ComparableObject getSmallest() {
+		Node currentNode = root;
+		while(currentNode.getLeftNode() != null) {
+			currentNode = currentNode.getLeftNode();
+		}
+		return currentNode.getValue();
 	}
 
 	public int[] getAllValues() {
