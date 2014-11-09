@@ -12,14 +12,13 @@ public class Tree {
 
 		boolean valueAdded = false;
 		Node currentNode = root;
-
+		if (root == null) {
+			root = new Node(value, null);
+		}
 		if (!containsValue(value)) {
-			if (root == null) {
-				root = new Node(value, null);
-			}
 			while (!valueAdded) {
-				if (value.getObject().compareTo(
-						(currentNode.getValue().getObject())) == -1) {
+				if (value.getKey().compareTo(
+						(currentNode.getValue().getKey())) == -1) {
 					if (currentNode.getLeftNode() == null) {
 						currentNode.setLeftNode(new Node(value, currentNode));
 						valueAdded = true;
@@ -33,24 +32,25 @@ public class Tree {
 					} else {
 						currentNode = currentNode.getRightNode();
 					}
+
 				}
 			}
 		}
 	}
 
 	public void deleteValue(ComparableObject<?> value) {
-
+		Node currentNode = root;
 	}
 
 	public boolean containsValue(ComparableObject value) {
 		Node currentNode = root;
 		boolean valueFound = false;
 		while (!valueFound) {
-			if (currentNode.getValue().getObject().compareTo(value) == 0) {
+			if (currentNode.getValue().getKey().compareTo(value.getKey()) == 0) {
 				return true;
 			} else {
-				if (value.getObject().compareTo(
-						(currentNode.getValue().getObject())) == -1) {
+				if (value.getKey().compareTo(
+						(currentNode.getValue().getKey())) == -1) {
 					if (currentNode.getLeftNode() != null) {
 						currentNode = currentNode.getLeftNode();
 					} else {
@@ -68,12 +68,36 @@ public class Tree {
 		return valueFound;
 	}
 
-	public int getSize() {
-		return 0;
+	public int getSize(Node currentNode) {
+		int leftSize = 0, rightSize = 0;
+		if (currentNode == null) {
+			return 0;
+		} else {
+			if(currentNode.getLeftNode() != null) {
+				leftSize++;
+			}
+			if(currentNode.getRightNode() != null) {
+				rightSize++;
+			}
+			leftSize = getSize(currentNode.getLeftNode());
+			rightSize = getSize(currentNode.getRightNode());
+			return leftSize + rightSize + 1;
+		}
 	}
 
-	public int getHeight() {
-		return 0;
+	public TreeHeight getHeight(Node currentNode) {
+		int leftHeight, rightHeight;
+		if (currentNode == null) {
+			return new TreeHeight(0,0);
+		} else {
+			leftHeight = getHeight(currentNode.getLeftNode()).getTotalHeight();
+			rightHeight = getHeight(currentNode.getRightNode()).getTotalHeight();
+			return new TreeHeight(leftHeight + 1, rightHeight + 1);
+		}
+	}
+
+	public Node getRoot() {
+		return root;
 	}
 
 	public ComparableObject getBiggest() {
@@ -86,7 +110,7 @@ public class Tree {
 
 	public ComparableObject getSmallest() {
 		Node currentNode = root;
-		while(currentNode.getLeftNode() != null) {
+		while (currentNode.getLeftNode() != null) {
 			currentNode = currentNode.getLeftNode();
 		}
 		return currentNode.getValue();
