@@ -8,10 +8,11 @@ import org.junit.Test;
 
 import de.szut.baum.ComparableObject;
 import de.szut.baum.Tree;
+import de.szut.baum.TreeHeight;
 
 public class Tree_Test {
 
-	private int[] unsortedList = { 4, 3, 6, 2, 1, 5, -3, -1, -2 };
+	private int[] unsortedList = { 3, 4, 6, 2, 1, 5, -3, -1, -2 };
 	private int[] sortedList = { -3, -2, -1, 1, 2, 3, 4, 5, 6 };
 	
 	
@@ -34,16 +35,16 @@ public class Tree_Test {
 		for(int i : unsortedList) {
 			tree.addValue(new ComparableObject<Integer>((Integer) i));
 		}
-		assertEquals(-3, tree.getSmallest().getObject());
+		assertEquals(-3, tree.getSmallest().getKey());
 	}
 	
 	@Test
-	public void getHighest_Test() {
+	public void getBiggest_Test() {
 		Tree tree = new Tree();
 		for(int i : unsortedList) {
 			tree.addValue(new ComparableObject<Integer>((Integer) i));
 		}
-		assertEquals(6, tree.getBiggest().getObject());
+		assertEquals(6, tree.getBiggest().getKey());
 	}
 	
 	@Test
@@ -52,7 +53,7 @@ public class Tree_Test {
 		for(int i : unsortedList) {
 			tree.addValue(new ComparableObject<Integer>((Integer) i));
 		}
-		assertEquals(unsortedList.length, tree.getSize());
+		assertEquals(unsortedList.length, tree.getSize(tree.getRoot()));
 	}
 	
 	@Test
@@ -72,5 +73,13 @@ public class Tree_Test {
 		}
 		tree.deleteValue(new ComparableObject<Integer>((Integer) 3));
 		assertEquals(false, tree.containsValue(new ComparableObject<Integer>((Integer) 3)));
+	}
+	@Test
+	public void getHeight_Test() {
+		Tree tree = new Tree();
+		for(int i : unsortedList) {
+			tree.addValue(new ComparableObject<Integer>((Integer) i));
+		}
+		assertEquals(6, tree.getHeight(tree.getRoot()).getTotalHeight());
 	}
 }
