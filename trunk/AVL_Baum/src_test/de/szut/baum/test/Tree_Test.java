@@ -71,8 +71,8 @@ public class Tree_Test {
 		for(int i : unsortedList) {
 			tree.addValue(new ComparableObject<Integer>((Integer) i));
 		}
-		tree.deleteValue(new ComparableObject<Integer>((Integer) 3));
-		assertEquals(false, tree.containsValue(new ComparableObject<Integer>((Integer) 3)));
+		tree.deleteValue(new ComparableObject<Integer>((Integer) (1)));
+		assertEquals(false, tree.containsValue(new ComparableObject<Integer>((Integer) (1))));
 	}
 	@Test
 	public void getHeight_Test() {
