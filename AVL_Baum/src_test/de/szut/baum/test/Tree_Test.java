@@ -62,7 +62,9 @@ public class Tree_Test {
 		for(int i : unsortedList) {
 			tree.addValue(new ComparableObject<Integer>((Integer) i));
 		}
-		assertEquals(true, tree.containsValue(new ComparableObject<Integer>((Integer)unsortedList[new Random().nextInt(unsortedList.length)])));
+		for(int i = 0 ; i < sortedList.length; i++) {
+			assertEquals(true, tree.containsValue(new ComparableObject<Integer>((Integer)sortedList[i])));
+		}
 	}
 	
 	@Test
@@ -79,6 +81,10 @@ public class Tree_Test {
 		assertEquals(false, tree.containsValue(new ComparableObject<Integer>((Integer) (4))));
 		assertEquals(true, tree.containsValue(new ComparableObject<Integer>((Integer) (6))));
 		assertEquals(true, tree.containsValue(new ComparableObject<Integer>((Integer) (-2))));
+		assertEquals(true, tree.containsValue(new ComparableObject<Integer>((Integer) (-3))));
+		assertEquals(true, tree.containsValue(new ComparableObject<Integer>((Integer) (-1))));
+		assertEquals(true, tree.containsValue(new ComparableObject<Integer>((Integer) (2))));
+		assertEquals(true, tree.containsValue(new ComparableObject<Integer>((Integer) (5))));
 	}
 	@Test
 	public void getHeight_Test() {
