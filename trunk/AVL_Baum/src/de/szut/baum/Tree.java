@@ -1,5 +1,7 @@
 package de.szut.baum;
 
+import java.util.ArrayList;
+
 public class Tree {
 
 	private Node root;
@@ -30,7 +32,6 @@ public class Tree {
 					} else {
 						currentNode = currentNode.getRightNode();
 					}
-
 				}
 			}
 		}
@@ -48,59 +49,104 @@ public class Tree {
 				if(currentNode.getValue().getKey().compareTo(value.getKey()) == 0) {
 					Node valueToDelete = currentNode;
 					TreeHeight subTreeHeight = getHeight(currentNode);
-					if(subTreeHeight.getLeftHeight() > subTreeHeight.getRightHeight() 
-							|| (subTreeHeight.getLeftHeight() == subTreeHeight.getRightHeight() 
-							&& valueToDelete.getLeftNode() != null)) {
-						if(valueToDelete.getValue().getKey().compareTo(valueToDelete.getParent().getValue().getKey()) == -1) {
-							valueToDelete.getParent().setLeftNode(valueToDelete.getLeftNode());
-							valueToDelete.getLeftNode().setParent(valueToDelete.getParent());
-							if(valueToDelete.getRightNode() != null) {
-								while(currentNode.getRightNode() != null) {
-								currentNode = currentNode.getRightNode();
+					if(valueToDelete != root) {
+						if(subTreeHeight.getLeftHeight() > subTreeHeight.getRightHeight() 
+								|| (subTreeHeight.getLeftHeight() == subTreeHeight.getRightHeight() 
+								&& valueToDelete.getLeftNode() != null)) {
+							if(valueToDelete.getValue().getKey().compareTo(valueToDelete.getParent().getValue().getKey()) == -1) {
+								valueToDelete.getParent().setLeftNode(valueToDelete.getLeftNode());
+								valueToDelete.getLeftNode().setParent(valueToDelete.getParent());
+								if(valueToDelete.getRightNode() != null) {
+									currentNode = valueToDelete.getLeftNode();
+									while(currentNode.getRightNode() != null) {
+										currentNode = currentNode.getRightNode();
+									}
+									currentNode.setRightNode(valueToDelete.getRightNode());
+									valueToDelete.getRightNode().setParent(currentNode);
+								
+								}
+								
+							} else {
+								valueToDelete.getParent().setRightNode(valueToDelete.getRightNode());
+								valueToDelete.getRightNode().setParent(valueToDelete.getParent());
+								if(valueToDelete.getLeftNode() != null) {
+									currentNode = valueToDelete.getRightNode();
+									while(currentNode.getLeftNode() != null) {
+										currentNode = currentNode.getLeftNode();
+									}
+									currentNode.setLeftNode(valueToDelete.getLeftNode());
+									valueToDelete.getLeftNode().setParent(currentNode);
+								}
+								
 							}
-							currentNode.setRightNode(valueToDelete.getRightNode());
-							valueToDelete.getRightNode().setParent(currentNode);
-							
+						} else if(subTreeHeight.getRightHeight() > subTreeHeight.getLeftHeight()
+								|| (subTreeHeight.getRightHeight() == subTreeHeight.getLeftHeight() 
+								&& valueToDelete.getRightNode() != null)) {
+							if(valueToDelete.getValue().getKey().compareTo(valueToDelete.getParent().getValue().getKey()) == -1) {
+								valueToDelete.getParent().setLeftNode(valueToDelete.getLeftNode());
+								valueToDelete.getLeftNode().setParent(valueToDelete.getParent());
+								if(valueToDelete.getLeftNode() != null) {
+									currentNode = valueToDelete.getRightNode();
+									while(currentNode.getLeftNode() != null) {
+										currentNode = currentNode.getLeftNode();
+									}
+									currentNode.setRightNode(valueToDelete.getRightNode());
+									valueToDelete.getRightNode().setParent(currentNode);
+								}
+							} else {
+								valueToDelete.getParent().setRightNode(valueToDelete.getRightNode());
+								valueToDelete.getRightNode().setParent(valueToDelete.getParent());
+								if(valueToDelete.getLeftNode() != null) {
+									currentNode = valueToDelete.getRightNode();
+									while(currentNode.getLeftNode() != null) {
+										currentNode = currentNode.getLeftNode();
+									}
+									currentNode.setLeftNode(valueToDelete.getLeftNode());
+									valueToDelete.getLeftNode().setParent(currentNode);
+								}
 							}
-							
 						} else {
-							valueToDelete.getParent().setRightNode(valueToDelete.getRightNode());
-							valueToDelete.getRightNode().setParent(valueToDelete.getParent());
-							if(valueToDelete.getLeftNode() != null) {
-								while(currentNode.getLeftNode() != null) {
-								currentNode = currentNode.getLeftNode();
+							if(valueToDelete.getValue().getKey().compareTo(valueToDelete.getParent().getValue().getKey()) == -1) {
+								valueToDelete.getParent().setLeftNode(null);
+							} else {
+								valueToDelete.getParent().setRightNode(null);
 							}
-							currentNode.setLeftNode(valueToDelete.getLeftNode());
-							valueToDelete.getLeftNode().setParent(currentNode);
-							}
-							
 						}
-					} else if(subTreeHeight.getRightHeight() > subTreeHeight.getLeftHeight()
-							|| (subTreeHeight.getRightHeight() == subTreeHeight.getLeftHeight() 
-							&& valueToDelete.getRightNode() != null)) {
-						if(valueToDelete.getValue().getKey().compareTo(valueToDelete.getParent().getValue().getKey()) == -1) {
-							valueToDelete.getParent().setLeftNode(valueToDelete.getLeftNode());
-							valueToDelete.getLeftNode().setParent(valueToDelete.getParent());
+					} else {
+						if(subTreeHeight.getLeftHeight() > subTreeHeight.getRightHeight() 
+								|| (subTreeHeight.getLeftHeight() == subTreeHeight.getRightHeight() 
+								&& valueToDelete.getLeftNode() != null)) {
+							
+							valueToDelete.getLeftNode().setParent(null);
+							if(valueToDelete.getRightNode() != null) {
+								currentNode = valueToDelete.getLeftNode();
+								while(currentNode.getRightNode() != null) {
+									currentNode = currentNode.getRightNode();
+								}
+								currentNode.setRightNode(valueToDelete.getRightNode());
+								valueToDelete.getRightNode().setParent(currentNode);
+							
+							}
+							root = valueToDelete.getLeftNode();
+							
+						} else if(subTreeHeight.getRightHeight() > subTreeHeight.getLeftHeight()
+								|| (subTreeHeight.getRightHeight() == subTreeHeight.getLeftHeight() 
+								&& valueToDelete.getRightNode() != null)) {
+							
+							valueToDelete.getRightNode().setParent(null);
 							if(valueToDelete.getLeftNode() != null) {
+								currentNode = valueToDelete.getRightNode();
 								while(currentNode.getLeftNode() != null) {
 									currentNode = currentNode.getLeftNode();
 								}
 								currentNode.setLeftNode(valueToDelete.getLeftNode());
 								valueToDelete.getLeftNode().setParent(currentNode);
 							}
+							root = valueToDelete.getRightNode();
 						} else {
-						valueToDelete.getParent().setRightNode(valueToDelete.getRightNode());
-						valueToDelete.getRightNode().setParent(valueToDelete.getParent());
-						if(valueToDelete.getRightNode() != null) {
-							while(currentNode.getRightNode() != null) {
-								currentNode = currentNode.getRightNode();
-							}
-							currentNode.setRightNode(valueToDelete.getRightNode());
-							valueToDelete.getRightNode().setParent(currentNode);
+							root = null;
 						}
-						
 					}
-				}
 					valueDeleted = true;
 				} else if(value.getKey().compareTo(currentNode.getValue().getKey()) == -1) {
 					currentNode = currentNode.getLeftNode();
@@ -160,8 +206,7 @@ public class Tree {
 			return new TreeHeight(0, 0);
 		} else {
 			leftHeight = getHeight(currentNode.getLeftNode()).getTotalHeight();
-			rightHeight = getHeight(currentNode.getRightNode())
-					.getTotalHeight();
+			rightHeight = getHeight(currentNode.getRightNode()).getTotalHeight();
 			return new TreeHeight(leftHeight + 1, rightHeight + 1);
 		}
 	}
@@ -186,7 +231,11 @@ public class Tree {
 		return currentNode.getValue();
 	}
 
-	public int[] getAllValues() {
+	public ArrayList<Integer> getAllValues() {
 		return null;
+	}
+	
+	private void rebalanceAVLTree(Node treeToBalance) {
+		
 	}
 }

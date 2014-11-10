@@ -25,7 +25,7 @@ public class Tree_Test {
 		}
 
 		for (int i = 0; i < sortedList.length; i++) {
-			assertEquals(sortedList[i], tree.getAllValues()[i]);
+			assertEquals(sortedList[i], (int)tree.getAllValues().get(i));
 		}
 	}
 
@@ -35,7 +35,7 @@ public class Tree_Test {
 		for(int i : unsortedList) {
 			tree.addValue(new ComparableObject<Integer>((Integer) i));
 		}
-		assertEquals(-3, tree.getSmallest().getKey());
+		assertEquals(sortedList[0], tree.getSmallest().getKey());
 	}
 	
 	@Test
@@ -44,7 +44,7 @@ public class Tree_Test {
 		for(int i : unsortedList) {
 			tree.addValue(new ComparableObject<Integer>((Integer) i));
 		}
-		assertEquals(6, tree.getBiggest().getKey());
+		assertEquals(sortedList[sortedList.length-1], tree.getBiggest().getKey());
 	}
 	
 	@Test
@@ -73,6 +73,8 @@ public class Tree_Test {
 		}
 		tree.deleteValue(new ComparableObject<Integer>((Integer) (1)));
 		tree.deleteValue(new ComparableObject<Integer>((Integer) (4)));
+		tree.deleteValue(new ComparableObject<Integer>((Integer) (3)));
+		assertEquals(false, tree.containsValue(new ComparableObject<Integer>((Integer) (3))));
 		assertEquals(false, tree.containsValue(new ComparableObject<Integer>((Integer) (1))));
 		assertEquals(false, tree.containsValue(new ComparableObject<Integer>((Integer) (4))));
 		assertEquals(true, tree.containsValue(new ComparableObject<Integer>((Integer) (6))));
