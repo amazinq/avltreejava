@@ -35,6 +35,10 @@ public class Tree {
 			}
 		}
 	}
+	
+	public void getValue(ComparableObject valueToGet) {
+		
+	}
 
 	public void deleteValue(ComparableObject value) {
 		Node currentNode = root;
@@ -42,7 +46,6 @@ public class Tree {
 		if (containsValue(value)) {
 			while (!valueDeleted) {
 				if(currentNode.getValue().getKey().compareTo(value.getKey()) == 0) {
-					System.out.println("test");
 					Node valueToDelete = currentNode;
 					TreeHeight subTreeHeight = getHeight(currentNode);
 					if(subTreeHeight.getLeftHeight() > subTreeHeight.getRightHeight() 
@@ -63,7 +66,7 @@ public class Tree {
 						} else {
 							valueToDelete.getParent().setRightNode(valueToDelete.getRightNode());
 							valueToDelete.getRightNode().setParent(valueToDelete.getParent());
-							if(valueToDelete.getRightNode() != null) {
+							if(valueToDelete.getLeftNode() != null) {
 								while(currentNode.getLeftNode() != null) {
 								currentNode = currentNode.getLeftNode();
 							}
@@ -75,10 +78,29 @@ public class Tree {
 					} else if(subTreeHeight.getRightHeight() > subTreeHeight.getLeftHeight()
 							|| (subTreeHeight.getRightHeight() == subTreeHeight.getLeftHeight() 
 							&& valueToDelete.getRightNode() != null)) {
-						
-					} else {
+						if(valueToDelete.getValue().getKey().compareTo(valueToDelete.getParent().getValue().getKey()) == -1) {
+							valueToDelete.getParent().setLeftNode(valueToDelete.getLeftNode());
+							valueToDelete.getLeftNode().setParent(valueToDelete.getParent());
+							if(valueToDelete.getLeftNode() != null) {
+								while(currentNode.getLeftNode() != null) {
+									currentNode = currentNode.getLeftNode();
+								}
+								currentNode.setLeftNode(valueToDelete.getLeftNode());
+								valueToDelete.getLeftNode().setParent(currentNode);
+							}
+						} else {
+						valueToDelete.getParent().setRightNode(valueToDelete.getRightNode());
+						valueToDelete.getRightNode().setParent(valueToDelete.getParent());
+						if(valueToDelete.getRightNode() != null) {
+							while(currentNode.getRightNode() != null) {
+								currentNode = currentNode.getRightNode();
+							}
+							currentNode.setRightNode(valueToDelete.getRightNode());
+							valueToDelete.getRightNode().setParent(currentNode);
+						}
 						
 					}
+				}
 					valueDeleted = true;
 				} else if(value.getKey().compareTo(currentNode.getValue().getKey()) == -1) {
 					currentNode = currentNode.getLeftNode();
