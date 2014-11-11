@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public class Tree {
 
 	private Node root;
+	private ArrayList<ComparableObject> allValues = new ArrayList<ComparableObject>();
 
 	public Tree() {
 		root = null;
@@ -21,6 +22,7 @@ public class Tree {
 				if (value.getKey().compareTo((currentNode.getValue().getKey())) == -1) {
 					if (currentNode.getLeftNode() == null) {
 						currentNode.setLeftNode(new Node(value, currentNode));
+//						this.rebalanceAVLTree(currentNode);
 						valueAdded = true;
 					} else {
 						currentNode = currentNode.getLeftNode();
@@ -28,6 +30,7 @@ public class Tree {
 				} else {
 					if (currentNode.getRightNode() == null) {
 						currentNode.setRightNode(new Node(value, currentNode));
+//						this.rebalanceAVLTree(currentNode);
 						valueAdded = true;
 					} else {
 						currentNode = currentNode.getRightNode();
@@ -231,11 +234,27 @@ public class Tree {
 		return currentNode.getValue();
 	}
 
-	public ArrayList<Integer> getAllValues() {
-		return null;
+	public ArrayList<ComparableObject> getAllValues() {
+		allValues = new ArrayList<ComparableObject>();
+		inOrder(root);
+		return allValues;
+	}
+	
+	private void inOrder(Node node) {
+		if(node!= null) {
+			inOrder(node.getLeftNode());
+			allValues.add(node.getValue());
+			inOrder(node.getRightNode());
+		}
 	}
 	
 	private void rebalanceAVLTree(Node treeToBalance) {
-		
+		TreeHeight subTreeHeight = getHeight(treeToBalance);
+		while(subTreeHeight.getLeftHeight() - subTreeHeight.getRightHeight() >= 2) {
+			
+		}
+		while(subTreeHeight.getRightHeight() - subTreeHeight.getLeftHeight() >= 2) {
+			
+		}
 	}
 }
