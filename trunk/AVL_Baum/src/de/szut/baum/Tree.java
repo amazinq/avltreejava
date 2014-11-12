@@ -5,10 +5,13 @@ import java.util.ArrayList;
 public class Tree {
 
 	private Node root;
-	private ArrayList<ComparableObject> allValues = new ArrayList<ComparableObject>();
+	private ArrayList<ComparableObject> allValues;
+	private ArrayList<Node> allNodes;
 
 	public Tree() {
 		root = null;
+		allValues = new ArrayList<ComparableObject>();
+		allNodes = new ArrayList<Node>();
 	}
 
 	public void addValue(ComparableObject value) {
@@ -22,7 +25,7 @@ public class Tree {
 				if (value.getKey().compareTo((currentNode.getValue().getKey())) == -1) {
 					if (currentNode.getLeftNode() == null) {
 						currentNode.setLeftNode(new Node(value, currentNode));
-//						this.rebalanceAVLTree(currentNode);
+						this.rebalanceAVLTree(currentNode.getLeftNode());
 						valueAdded = true;
 					} else {
 						currentNode = currentNode.getLeftNode();
@@ -30,7 +33,7 @@ public class Tree {
 				} else {
 					if (currentNode.getRightNode() == null) {
 						currentNode.setRightNode(new Node(value, currentNode));
-//						this.rebalanceAVLTree(currentNode);
+						this.rebalanceAVLTree(currentNode.getRightNode());
 						valueAdded = true;
 					} else {
 						currentNode = currentNode.getRightNode();
@@ -40,10 +43,12 @@ public class Tree {
 		}
 	}
 	
+	@SuppressWarnings("rawtypes")
 	public void getValue(ComparableObject valueToGet) {
 		
 	}
 
+	@SuppressWarnings("unchecked")
 	public void deleteValue(ComparableObject value) {
 		Node currentNode = root;
 		boolean valueDeleted = false;
@@ -248,13 +253,35 @@ public class Tree {
 		}
 	}
 	
+	
 	private void rebalanceAVLTree(Node treeToBalance) {
-		TreeHeight subTreeHeight = getHeight(treeToBalance);
-		while(subTreeHeight.getLeftHeight() - subTreeHeight.getRightHeight() >= 2) {
-			
-		}
-		while(subTreeHeight.getRightHeight() - subTreeHeight.getLeftHeight() >= 2) {
-			
+		while(treeToBalance != null) {
+			TreeHeight subTreeHeight = getHeight(treeToBalance);
+			if(subTreeHeight.getLeftHeight() - subTreeHeight.getRightHeight() >= 2) {
+				Node nodeToRotate = treeToBalance.getLeftNode();
+				if(treeToBalance != root) {
+					nodeToRotate.setParent(treeToBalance.getParent());
+				} else {
+					nodeToRotate.setParent(null);
+				}
+				nodeToRotate.setRightNode(treeToBalance.getRightNode());
+				if(treeToBalance.getRightNode() != null) {
+					treeToBalance.getRightNode().setParent(nodeToRotate);
+				}
+			}
+			if(subTreeHeight.getRightHeight() - subTreeHeight.getLeftHeight() >= 2) {
+				Node nodeToRotate = treeToBalance.getRightNode();
+				if(treeToBalance != root) {
+					nodeToRotate.setParent(treeToBalance.getParent());
+				} else {
+					nodeToRotate.setParent(null);
+				}
+				nodeToRotate.setLeftNode(treeToBalance.getLeftNode());
+				if(treeToBalance.getLeftNode() != null) {
+					treeToBalance.getLeftNode().setParent(nodeToRotate);
+				}
+			}
+			treeToBalance = treeToBalance.getParent();
 		}
 	}
 }
