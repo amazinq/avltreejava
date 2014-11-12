@@ -10,6 +10,7 @@ import de.szut.baum.Tree;
 public class Tree_Test {
 
 	private int[] unsortedList = { 3, 4, 6, 2, 1, 5, -3, -1, -2 };
+	private int[] test = {1,2,3,4,5,6,7,8,9,10};
 	private int[] sortedList = { -3, -2, -1, 1, 2, 3, 4, 5, 6 };
 	
 	
@@ -21,9 +22,8 @@ public class Tree_Test {
 		for (int i : unsortedList) {
 			tree.addValue(new ComparableObject<Integer>((Integer) i));
 		}
-
 		for (int i = 0; i < sortedList.length; i++) {
-			System.out.println((Integer)((ComparableObject<Integer>) tree.getAllValues().get(i)).getKey());
+			//System.out.println((Integer)((ComparableObject<Integer>) tree.getAllValues().get(i)).getKey());
 			if(sortedList[i] != (Integer)((ComparableObject<Integer>) tree.getAllValues().get(i)).getKey()) {
 				correctOutput = false;
 			}
@@ -78,6 +78,7 @@ public class Tree_Test {
 		tree.deleteValue(new ComparableObject<Integer>((Integer) (1)));
 		tree.deleteValue(new ComparableObject<Integer>((Integer) (4)));
 		tree.deleteValue(new ComparableObject<Integer>((Integer) (3)));
+		tree.print();
 		assertEquals(false, tree.containsValue(new ComparableObject<Integer>((Integer) (3))));
 		assertEquals(false, tree.containsValue(new ComparableObject<Integer>((Integer) (1))));
 		assertEquals(false, tree.containsValue(new ComparableObject<Integer>((Integer) (4))));

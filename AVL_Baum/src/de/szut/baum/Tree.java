@@ -349,4 +349,22 @@ public class Tree<T extends Comparable<T>> {
 			treeToBalance = treeToBalance.getParent();
 		}
 	}
+	
+	public void print() {
+        printBinaryTree(root, 0);
+}
+
+	private void printBinaryTree(Node<T> root, int level){
+    if(root==null)
+         return;
+    printBinaryTree(root.getRightNode(), level+1);
+    if(level!=0){
+        for(int i=0;i<level-1;i++)
+            System.out.print("|\t");
+            System.out.println("|///////"+root.getValue().getKey());
+    }
+    else
+        System.out.println(root.getValue().getKey());
+    printBinaryTree(root.getLeftNode(), level+1);
+}
 }
