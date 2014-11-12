@@ -19,18 +19,18 @@ public class Tree_Test {
 	@Test
 	public void addValue_test() {
 		Tree tree = new Tree();
-		boolean correctOutput = false;
+		boolean correctOutput = true;
 
 		for (int i : unsortedList) {
 			tree.addValue(new ComparableObject<Integer>((Integer) i));
 		}
 
 		for (int i = 0; i < sortedList.length; i++) {
-			if(sortedList[i] != (int)tree.getAllValues().get(i).getKey()) {
-				
+			System.out.println((Integer)tree.getAllValues().get(i).getKey());
+			if(sortedList[i] != (Integer)tree.getAllValues().get(i).getKey()) {
+				correctOutput = false;
 			}
 		}
-		correctOutput = true;
 		assertEquals(true, correctOutput);
 	}
 
