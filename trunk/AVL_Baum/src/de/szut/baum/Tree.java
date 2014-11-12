@@ -118,10 +118,14 @@ public class Tree<T extends Comparable<T>> {
 								}
 							}
 						} else {
+							System.out.println("Deletion of no child nodes");
 							if(valueToDelete.getValue().getKey().compareTo(valueToDelete.getParent().getValue().getKey()) == -1) {
+								System.out.println("Deletion of Leftnode");
 								valueToDelete.getParent().setLeftNode(null);
+								valueDeleted = true;
 							} else {
 								valueToDelete.getParent().setRightNode(null);
+								valueDeleted = true;
 							}
 						}
 					} else {
