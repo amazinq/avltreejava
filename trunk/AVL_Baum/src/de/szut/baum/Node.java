@@ -1,44 +1,44 @@
 package de.szut.baum;
 
-public class Node {
+public class Node<T extends Comparable<T>> {
 	
-	private ComparableObject value;
-	private Node parent;
-	private Node leftNode;
-	private Node rightNode;
+	private ComparableObject<T> value;
+	private Node<T> parent;
+	private Node<T> leftNode;
+	private Node<T> rightNode;
 	
-	public Node(ComparableObject value2, Node parent) {
-		this.value = (ComparableObject) value2;
+	public Node(ComparableObject<T> value2, Node<T> parent) {
+		this.value = value2;
 		this.parent = parent;
 		leftNode = null;
 		rightNode = null;
 	}
 	
-	public Node getLeftNode() {
+	public Node<T> getLeftNode() {
 		return leftNode;
 	}
 	
-	public void setLeftNode(Node leftNode) {
+	public void setLeftNode(Node<T> leftNode) {
 		this.leftNode = leftNode;
 	}
 	
-	public Node getRightNode() {
+	public Node<T> getRightNode() {
 		return rightNode;
 	}
 	
-	public void setRightNode(Node rightNode) {
+	public void setRightNode(Node<T> rightNode) {
 		this.rightNode = rightNode;
 	}
 	
-	public ComparableObject getValue() {
+	public ComparableObject<T> getValue() {
 		return value;
 	}
 
-	public Node getParent() {
+	public Node<T> getParent() {
 		return parent;
 	}
 
-	public void setParent(Node parent) {
+	public void setParent(Node<T> parent) {
 		this.parent = parent;
 	}
 

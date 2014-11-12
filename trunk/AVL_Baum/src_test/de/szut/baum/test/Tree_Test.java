@@ -2,13 +2,10 @@ package de.szut.baum.test;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.Random;
-
 import org.junit.Test;
 
 import de.szut.baum.ComparableObject;
 import de.szut.baum.Tree;
-import de.szut.baum.TreeHeight;
 
 public class Tree_Test {
 
@@ -18,7 +15,7 @@ public class Tree_Test {
 	
 	@Test
 	public void addValue_test() {
-		Tree tree = new Tree();
+		Tree<Integer> tree = new Tree<Integer>();
 		boolean correctOutput = true;
 
 		for (int i : unsortedList) {
@@ -26,8 +23,8 @@ public class Tree_Test {
 		}
 
 		for (int i = 0; i < sortedList.length; i++) {
-			System.out.println((Integer)tree.getAllValues().get(i).getKey());
-			if(sortedList[i] != (Integer)tree.getAllValues().get(i).getKey()) {
+			System.out.println((Integer)((ComparableObject<Integer>) tree.getAllValues().get(i)).getKey());
+			if(sortedList[i] != (Integer)((ComparableObject<Integer>) tree.getAllValues().get(i)).getKey()) {
 				correctOutput = false;
 			}
 		}
@@ -36,25 +33,25 @@ public class Tree_Test {
 
 	@Test
 	public void getSmallest_Test() {
-		Tree tree = new Tree();
+		Tree<Integer> tree = new Tree<Integer>();
 		for(int i : unsortedList) {
 			tree.addValue(new ComparableObject<Integer>((Integer) i));
 		}
-		assertEquals(sortedList[0], tree.getSmallest().getKey());
+		assertEquals((Integer)sortedList[0], tree.getSmallest().getKey());
 	}
 	
 	@Test
 	public void getBiggest_Test() {
-		Tree tree = new Tree();
+		Tree<Integer> tree = new Tree<Integer>();
 		for(int i : unsortedList) {
 			tree.addValue(new ComparableObject<Integer>((Integer) i));
 		}
-		assertEquals(sortedList[sortedList.length-1], tree.getBiggest().getKey());
+		assertEquals((Integer)sortedList[sortedList.length-1], tree.getBiggest().getKey());
 	}
 	
 	@Test
 	public void getSize_Test() {
-		Tree tree = new Tree();
+		Tree<Integer> tree = new Tree<Integer>();
 		for(int i : unsortedList) {
 			tree.addValue(new ComparableObject<Integer>((Integer) i));
 		}
@@ -63,7 +60,7 @@ public class Tree_Test {
 	
 	@Test
 	public void containsValue_Test() {
-		Tree tree = new Tree();
+		Tree<Integer> tree = new Tree<Integer>();
 		for(int i : unsortedList) {
 			tree.addValue(new ComparableObject<Integer>((Integer) i));
 		}
@@ -74,7 +71,7 @@ public class Tree_Test {
 	
 	@Test
 	public void deleteValue_Test() {
-		Tree tree = new Tree();
+		Tree<Integer> tree = new Tree<Integer>();
 		for(int i : unsortedList) {
 			tree.addValue(new ComparableObject<Integer>((Integer) i));
 		}
@@ -93,10 +90,10 @@ public class Tree_Test {
 	}
 	@Test
 	public void getHeight_Test() {
-		Tree tree = new Tree();
+		Tree<Integer> tree = new Tree<Integer>();
 		for(int i : unsortedList) {
 			tree.addValue(new ComparableObject<Integer>((Integer) i));
 		}
-		assertEquals(6, tree.getHeight(tree.getRoot()).getTotalHeight());
+		assertEquals(4, tree.getHeight(tree.getRoot()).getTotalHeight());
 	}
 }

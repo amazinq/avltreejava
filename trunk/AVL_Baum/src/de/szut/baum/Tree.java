@@ -2,29 +2,29 @@ package de.szut.baum;
 
 import java.util.ArrayList;
 
-public class Tree {
+public class Tree<T extends Comparable<T>> {
 
-	private Node root;
-	private ArrayList<ComparableObject> allValues;
-	private ArrayList<Node> allNodes;
+	private Node<T> root;
+	private ArrayList<ComparableObject<T>> allValues;
+	private ArrayList<Node<T>> allNodes;
 
 	public Tree() {
 		root = null;
-		allValues = new ArrayList<ComparableObject>();
-		allNodes = new ArrayList<Node>();
+		allValues = new ArrayList<ComparableObject<T>>();
+		allNodes = new ArrayList<Node<T>>();
 	}
 
-	public void addValue(ComparableObject value) {
+	public void addValue(ComparableObject<T> value) {
 		boolean valueAdded = false;
-		Node currentNode = root;
+		Node<T> currentNode = root;
 		if (root == null) {
-			root = new Node(value, null);
+			root = new Node<T>(value, null);
 		}
 		if (!containsValue(value)) {
 			while (!valueAdded) {
 				if (value.getKey().compareTo((currentNode.getValue().getKey())) == -1) {
 					if (currentNode.getLeftNode() == null) {
-						currentNode.setLeftNode(new Node(value, currentNode));
+						currentNode.setLeftNode(new Node<T>(value, currentNode));
 						this.rebalanceAVLTree(currentNode.getLeftNode());
 						valueAdded = true;
 					} else {
@@ -32,7 +32,7 @@ public class Tree {
 					}
 				} else {
 					if (currentNode.getRightNode() == null) {
-						currentNode.setRightNode(new Node(value, currentNode));
+						currentNode.setRightNode(new Node<T>(value, currentNode));
 						this.rebalanceAVLTree(currentNode.getRightNode());
 						valueAdded = true;
 					} else {
@@ -43,19 +43,23 @@ public class Tree {
 		}
 	}
 	
-	@SuppressWarnings("rawtypes")
-	public void getValue(ComparableObject valueToGet) {
+	
+	public void getValue(ComparableObject<T> valueToGet) {
 		
 	}
 
-	@SuppressWarnings("unchecked")
-	public void deleteValue(ComparableObject value) {
-		Node currentNode = root;
+	
+	public ArrayList<Node<T>> getAllNodes() {
+		return allNodes;
+	}
+
+	public void deleteValue(ComparableObject<T> value) {
+		Node<T> currentNode = root;
 		boolean valueDeleted = false;
 		if (containsValue(value)) {
 			while (!valueDeleted) {
 				if(currentNode.getValue().getKey().compareTo(value.getKey()) == 0) {
-					Node valueToDelete = currentNode;
+					Node<T> valueToDelete = currentNode;
 					TreeHeight subTreeHeight = getHeight(currentNode);
 					if(valueToDelete != root) {
 						if(subTreeHeight.getLeftHeight() > subTreeHeight.getRightHeight() 
@@ -166,8 +170,8 @@ public class Tree {
 
 	}
 
-	public boolean containsValue(ComparableObject value) {
-		Node currentNode = root;
+	public boolean containsValue(ComparableObject<T> value) {
+		Node<T> currentNode = root;
 		boolean valueFound = false;
 		while (!valueFound) {
 			if (currentNode.getValue().getKey().compareTo(value.getKey()) == 0) {
@@ -191,7 +195,7 @@ public class Tree {
 		return valueFound;
 	}
 
-	public int getSize(Node currentNode) {
+	public int getSize(Node<T> currentNode) {
 		int leftSize = 0, rightSize = 0;
 		if (currentNode == null) {
 			return 0;
@@ -208,7 +212,7 @@ public class Tree {
 		}
 	}
 
-	public TreeHeight getHeight(Node currentNode) {
+	public TreeHeight getHeight(Node<T> currentNode) {
 		int leftHeight, rightHeight;
 		if (currentNode == null) {
 			return new TreeHeight(0, 0);
@@ -219,33 +223,33 @@ public class Tree {
 		}
 	}
 
-	public Node getRoot() {
+	public Node<T> getRoot() {
 		return root;
 	}
 
-	public ComparableObject getBiggest() {
-		Node currentNode = root;
+	public ComparableObject<T> getBiggest() {
+		Node<T> currentNode = root;
 		while (currentNode.getRightNode() != null) {
 			currentNode = currentNode.getRightNode();
 		}
 		return currentNode.getValue();
 	}
 
-	public ComparableObject getSmallest() {
-		Node currentNode = root;
+	public ComparableObject<T> getSmallest() {
+		Node<T> currentNode = root;
 		while (currentNode.getLeftNode() != null) {
 			currentNode = currentNode.getLeftNode();
 		}
 		return currentNode.getValue();
 	}
 
-	public ArrayList<ComparableObject> getAllValues() {
-		allValues = new ArrayList<ComparableObject>();
+	public ArrayList<ComparableObject<T>> getAllValues() {
+		allValues = new ArrayList<ComparableObject<T>>();
 		inOrder(root);
 		return allValues;
 	}
 	
-	private void inOrder(Node node) {
+	private void inOrder(Node<T> node) {
 		if(node!= null) {
 			inOrder(node.getLeftNode());
 			allValues.add(node.getValue());
@@ -254,32 +258,93 @@ public class Tree {
 	}
 	
 	
-	private void rebalanceAVLTree(Node treeToBalance) {
+	private void rebalanceAVLTree(Node<T> treeToBalance) {
+		//System.out.println(treeToBalance.getValue().getKey());
 		while(treeToBalance != null) {
+			//System.out.println("currentValue: " + treeToBalance.getValue().getKey());
 			TreeHeight subTreeHeight = getHeight(treeToBalance);
-			if(subTreeHeight.getLeftHeight() - subTreeHeight.getRightHeight() >= 2) {
-				Node nodeToRotate = treeToBalance.getLeftNode();
-				if(treeToBalance != root) {
-					nodeToRotate.setParent(treeToBalance.getParent());
+			TreeHeight leftChildTreeHeight = getHeight(treeToBalance.getLeftNode());
+			TreeHeight rightChildTreeHeight = getHeight(treeToBalance.getRightNode());
+			//System.out.println("LefHeight: " + subTreeHeight.getLeftHeight());
+			//System.out.println("RightHeight: " + subTreeHeight.getRightHeight());
+			if(subTreeHeight.getLeftHeight() - subTreeHeight.getRightHeight() == 2
+					&& leftChildTreeHeight.getLeftHeight() - leftChildTreeHeight.getRightHeight() == -1) {
+				Node<T> leftChild = treeToBalance.getLeftNode();
+				Node<T> nodeToRotate = leftChild.getRightNode();
+				nodeToRotate.setParent(leftChild.getParent());
+				leftChild.setRightNode(nodeToRotate.getLeftNode());
+				if(leftChild.getParent() != null) {
+					leftChild.getParent().setLeftNode(nodeToRotate);
 				} else {
-					nodeToRotate.setParent(null);
+					root = nodeToRotate;
 				}
-				nodeToRotate.setRightNode(treeToBalance.getRightNode());
-				if(treeToBalance.getRightNode() != null) {
-					treeToBalance.getRightNode().setParent(nodeToRotate);
-				}
-			}
-			if(subTreeHeight.getRightHeight() - subTreeHeight.getLeftHeight() >= 2) {
-				Node nodeToRotate = treeToBalance.getRightNode();
-				if(treeToBalance != root) {
-					nodeToRotate.setParent(treeToBalance.getParent());
+				nodeToRotate.setLeftNode(leftChild);
+				leftChild.setParent(nodeToRotate);
+				
+				Node<T> node = treeToBalance.getLeftNode();
+				node.setParent(treeToBalance.getParent());
+				treeToBalance.setLeftNode(node.getRightNode());
+				if(treeToBalance.getParent() != null) {
+					treeToBalance.getParent().setLeftNode(node);
 				} else {
-					nodeToRotate.setParent(null);
+					root = node;
 				}
-				nodeToRotate.setLeftNode(treeToBalance.getLeftNode());
-				if(treeToBalance.getLeftNode() != null) {
-					treeToBalance.getLeftNode().setParent(nodeToRotate);
+				
+				node.setRightNode(treeToBalance);
+				treeToBalance.setParent(node);
+				
+			} else if(subTreeHeight.getLeftHeight() - subTreeHeight.getRightHeight() == -2
+					&& rightChildTreeHeight.getLeftHeight() - rightChildTreeHeight.getRightHeight() == 1) {
+				
+				Node<T> rightChild = treeToBalance.getRightNode();
+				Node<T> nodeToRotate = rightChild.getLeftNode();
+				nodeToRotate.setParent(rightChild.getParent());
+				rightChild.setLeftNode(nodeToRotate.getRightNode());
+				if(rightChild.getParent() != null) {
+					rightChild.getParent().setRightNode(nodeToRotate);
+				} else {
+					root = nodeToRotate;
 				}
+				
+				nodeToRotate.setRightNode(rightChild);
+				rightChild.setParent(nodeToRotate);
+				
+				Node<T> node = treeToBalance.getRightNode();
+				node.setParent(treeToBalance.getParent());
+				treeToBalance.setRightNode(node.getLeftNode());
+				if(treeToBalance.getParent() != null) {
+					treeToBalance.getParent().setRightNode(node);
+				} else {
+					root = node;
+				}
+				node.setLeftNode(treeToBalance);
+				treeToBalance.setParent(node); 
+				
+			} else if(subTreeHeight.getLeftHeight() - subTreeHeight.getRightHeight() == 2) {
+//				System.out.println("Right Rotation");
+				Node<T> nodeToRotate = treeToBalance.getLeftNode();
+				nodeToRotate.setParent(treeToBalance.getParent());
+				treeToBalance.setLeftNode(nodeToRotate.getRightNode());
+				if(treeToBalance.getParent() != null) {
+					treeToBalance.getParent().setLeftNode(nodeToRotate);
+				} else {
+					root = nodeToRotate;
+				}
+				
+				nodeToRotate.setRightNode(treeToBalance);
+				treeToBalance.setParent(nodeToRotate);
+			} else if(subTreeHeight.getRightHeight() - subTreeHeight.getLeftHeight() == 2) {
+//				System.out.println("Left Rotation");
+				Node<T> nodeToRotate = treeToBalance.getRightNode();
+				nodeToRotate.setParent(treeToBalance.getParent());
+				treeToBalance.setRightNode(nodeToRotate.getLeftNode());
+				if(treeToBalance.getParent() != null) {
+					treeToBalance.getParent().setRightNode(nodeToRotate);
+				} else {
+					root = nodeToRotate;
+				}
+				nodeToRotate.setLeftNode(treeToBalance);
+				treeToBalance.setParent(nodeToRotate); 
 			}
 			treeToBalance = treeToBalance.getParent();
 		}
