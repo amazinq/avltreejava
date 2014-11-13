@@ -2,6 +2,13 @@ package de.szut.baum;
 
 import java.util.ArrayList;
 
+/**
+ * 
+ * @author Steffen Wiﬂmann
+ * Class representing the AVL binary tree 
+ * Inherits all Methods available to use the tree
+ * @param <T>
+ */
 public class Tree<T extends Comparable<T>> {
 
 	private Node<T> root;
@@ -14,6 +21,12 @@ public class Tree<T extends Comparable<T>> {
 		allNodes = new ArrayList<Node<T>>();
 	}
 
+	/**
+	 * Adds a Value to the AVL Binary tree if its still not contained, else 
+	 * the add will be ignored. After adding the Value, the tree
+	 * will be rebalanced
+	 * @param value
+	 */
 	public void addValue(ComparableObject<T> value) {
 		boolean valueAdded = false;
 		Node<T> currentNode = root;
@@ -48,11 +61,19 @@ public class Tree<T extends Comparable<T>> {
 		
 	}
 
-	
+	/**
+	 * returns all nodes inherited in the binary tree
+	 * by using an arraylist
+	 * @return allNodes
+	 */
 	public ArrayList<Node<T>> getAllNodes() {
 		return allNodes;
 	}
-
+	/**
+	 * deletes a Value given, also rebalances the tree
+	 * after deleting a value
+	 * @param value
+	 */
 	public void deleteValue(ComparableObject<T> value) {
 		Node<T> currentNode = root;
 		boolean valueDeleted = false;
@@ -174,6 +195,11 @@ public class Tree<T extends Comparable<T>> {
 
 	}
 
+	/**
+	 * Checks if a value is contained in the binary tree
+	 * @param value
+	 * @return boolean valueFound
+	 */
 	public boolean containsValue(ComparableObject<T> value) {
 		Node<T> currentNode = root;
 		boolean valueFound = false;
@@ -199,6 +225,12 @@ public class Tree<T extends Comparable<T>> {
 		return valueFound;
 	}
 
+	/**
+	 * Calculates the total number of values contained
+	 * in the binary tree
+	 * @param currentNode
+	 * @return int size
+	 */
 	public int getSize(Node<T> currentNode) {
 		int leftSize = 0, rightSize = 0;
 		if (currentNode == null) {
@@ -216,6 +248,11 @@ public class Tree<T extends Comparable<T>> {
 		}
 	}
 
+	/**
+	 * Calculates the height of the given subtree
+	 * @param currentNode
+	 * @return TreeHeight treeHeight
+	 */
 	public TreeHeight getHeight(Node<T> currentNode) {
 		int leftHeight, rightHeight;
 		if (currentNode == null) {
@@ -227,10 +264,18 @@ public class Tree<T extends Comparable<T>> {
 		}
 	}
 
+	/**
+	 * returns the root
+	 * @return Node<T> node
+	 */
 	public Node<T> getRoot() {
 		return root;
 	}
 
+	/**
+	 * returns the biggest value of the binary tree
+	 * @return biggestValue
+	 */
 	public ComparableObject<T> getBiggest() {
 		Node<T> currentNode = root;
 		while (currentNode.getRightNode() != null) {
@@ -239,6 +284,10 @@ public class Tree<T extends Comparable<T>> {
 		return currentNode.getValue();
 	}
 
+	/**
+	 * returns the smallest value of the binary tree
+	 * @return smallestValue
+	 */
 	public ComparableObject<T> getSmallest() {
 		Node<T> currentNode = root;
 		while (currentNode.getLeftNode() != null) {
@@ -247,12 +296,19 @@ public class Tree<T extends Comparable<T>> {
 		return currentNode.getValue();
 	}
 
+	/**
+	 * returns all values of the binary tree
+	 * @return allValues
+	 */
 	public ArrayList<ComparableObject<T>> getAllValues() {
 		allValues = new ArrayList<ComparableObject<T>>();
 		inOrder(root);
 		return allValues;
 	}
-	
+	/**
+	 * in order Method to read all values of the binary tree
+	 * @param node
+	 */
 	private void inOrder(Node<T> node) {
 		if(node!= null) {
 			inOrder(node.getLeftNode());
@@ -261,7 +317,11 @@ public class Tree<T extends Comparable<T>> {
 		}
 	}
 	
-	
+	/**
+	 * method to rebalance the binary tree 
+	 * uses specific avl algorithms to keep the tree balanced
+	 * @param treeToBalance
+	 */
 	private void rebalanceAVLTree(Node<T> treeToBalance) {
 		//System.out.println(treeToBalance.getValue().getKey());
 		while(treeToBalance != null) {
