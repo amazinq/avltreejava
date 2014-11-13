@@ -317,14 +317,11 @@ public class Tree<T extends Comparable<T>> {
 	 * @param treeToBalance
 	 */
 	private void rebalanceAVLTree(Node<T> treeToBalance) {
-		//System.out.println(treeToBalance.getValue().getKey());
 		while(treeToBalance != null) {
-			//System.out.println("currentValue: " + treeToBalance.getValue().getKey());
 			TreeHeight subTreeHeight = getHeight(treeToBalance);
 			TreeHeight leftChildTreeHeight = getHeight(treeToBalance.getLeftNode());
 			TreeHeight rightChildTreeHeight = getHeight(treeToBalance.getRightNode());
-			//System.out.println("LefHeight: " + subTreeHeight.getLeftHeight());
-			//System.out.println("RightHeight: " + subTreeHeight.getRightHeight());
+			//Left-Right Case
 			if(subTreeHeight.getLeftHeight() - subTreeHeight.getRightHeight() == 2
 					&& leftChildTreeHeight.getLeftHeight() - leftChildTreeHeight.getRightHeight() == -1) {
 				Node<T> leftChild = treeToBalance.getLeftNode();
@@ -350,7 +347,7 @@ public class Tree<T extends Comparable<T>> {
 				
 				node.setRightNode(treeToBalance);
 				treeToBalance.setParent(node);
-				
+			//Right-Left Case	
 			} else if(subTreeHeight.getLeftHeight() - subTreeHeight.getRightHeight() == -2
 					&& rightChildTreeHeight.getLeftHeight() - rightChildTreeHeight.getRightHeight() == 1) {
 				
@@ -377,9 +374,8 @@ public class Tree<T extends Comparable<T>> {
 				}
 				node.setLeftNode(treeToBalance);
 				treeToBalance.setParent(node); 
-				
+			//Left-Left Case
 			} else if(subTreeHeight.getLeftHeight() - subTreeHeight.getRightHeight() == 2) {
-//				System.out.println("Right Rotation");
 				Node<T> nodeToRotate = treeToBalance.getLeftNode();
 				nodeToRotate.setParent(treeToBalance.getParent());
 				treeToBalance.setLeftNode(nodeToRotate.getRightNode());
@@ -391,8 +387,8 @@ public class Tree<T extends Comparable<T>> {
 				
 				nodeToRotate.setRightNode(treeToBalance);
 				treeToBalance.setParent(nodeToRotate);
+			//Right-Right Case	
 			} else if(subTreeHeight.getRightHeight() - subTreeHeight.getLeftHeight() == 2) {
-//				System.out.println("Left Rotation");
 				Node<T> nodeToRotate = treeToBalance.getRightNode();
 				nodeToRotate.setParent(treeToBalance.getParent());
 				treeToBalance.setRightNode(nodeToRotate.getLeftNode());
@@ -407,22 +403,4 @@ public class Tree<T extends Comparable<T>> {
 			treeToBalance = treeToBalance.getParent();
 		}
 	}
-	
-	public void print() {
-        printBinaryTree(root, 0);
-}
-
-	private void printBinaryTree(Node<T> root, int level){
-    if(root==null)
-         return;
-    printBinaryTree(root.getRightNode(), level+1);
-    if(level!=0){
-        for(int i=0;i<level-1;i++)
-            System.out.print("|\t");
-            System.out.println("|///////"+root.getValue().getKey());
-    }
-    else
-        System.out.println(root.getValue().getKey());
-    printBinaryTree(root.getLeftNode(), level+1);
-}
 }
