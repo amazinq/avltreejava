@@ -29,7 +29,6 @@ public class Tree_Test {
 			tree.addValue(new ComparableObject<Integer>((Integer) i));
 		}
 		for (int i = 0; i < sortedList.length; i++) {
-			//System.out.println((Integer)((ComparableObject<Integer>) tree.getAllValues().get(i)).getKey());
 			if(sortedList[i] != (Integer)((ComparableObject<Integer>) tree.getAllValues().get(i)).getKey()) {
 				correctOutput = false;
 			}
@@ -90,6 +89,8 @@ public class Tree_Test {
 		for(int i = 0 ; i < sortedList.length; i++) {
 			assertEquals(true, tree.containsValue(new ComparableObject<Integer>((Integer)sortedList[i])));
 		}
+		assertEquals(false, tree.containsValue(new ComparableObject<Integer>((Integer)4345)));
+		assertEquals(false, tree.containsValue(new ComparableObject<Integer>((Integer)(-4345))));
 	}
 	/**
 	 * tests if the deleteValue method deletes all given values
@@ -101,11 +102,8 @@ public class Tree_Test {
 		for(int i : unsortedList) {
 			tree.addValue(new ComparableObject<Integer>((Integer) i));
 		}
-		tree.print();
-		System.out.println();
 		tree.deleteValue(new ComparableObject<Integer>((Integer) (4)));
 		tree.deleteValue(new ComparableObject<Integer>((Integer) (3)));
-		tree.print();
 		assertEquals(false, tree.containsValue(new ComparableObject<Integer>((Integer) (3))));
 		assertEquals(true, tree.containsValue(new ComparableObject<Integer>((Integer) (1))));
 		assertEquals(false, tree.containsValue(new ComparableObject<Integer>((Integer) (4))));
